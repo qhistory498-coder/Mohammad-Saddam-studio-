@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mohammad Saddam Studios | Creator Dashboard</title>
+  <style>
+    :root {
+      --bg: #090a0f;
+      --card-bg: rgba(22, 25, 37, 0.85);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --primary: #d4af37;
+      --primary-glow: rgba(212, 175, 55, 0.25);
+      --accent: #e50914;
+      --accent-green: #25d366;
+      --text-main: #f5f6fa;
+      --text-sub: #9aa0b4;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      padding-bottom: 90px;
+      overflow-x: hidden;
+    }
+
+    /* Top App Bar */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      background: rgba(9, 10, 15, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--card-border);
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .brand-title {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: linear-gradient(135deg, #fff, var(--primary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(37, 211, 102, 0.12);
+      border: 1px solid rgba(37, 211, 102, 0.3);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      color: var(--accent-green);
+      font-weight: 600;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.2); }
+    }
+
+    .container {
+      max-width: 650px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* Profile Dashboard Card */
+    .profile-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      margin-bottom: 20px;
+    }
+
+    .profile-card::before {
+      content: '';
+      position: absolute;
+      top: -50px;
+      right: -50px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, var(--primary-glow), transparent 70%);
+      pointer-events: none;
+    }
+
+    .profile-top {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1f2233, #0f111a);
+      border: 2px solid var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    .profile-meta h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .profile-meta p {
+      font-size: 12px;
+      color: var(--primary);
+      font-weight: 600;
+      margin: 2px 0;
+    }
+
+    .profile-meta span {
+      font-size: 11px;
+      color: var(--text-sub);
+    }
+
+    .bio-text {
+      font-size: 12px;
+      color: var(--text-sub);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .stat-item {
+      background: rgba(10, 11, 18, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: var(--text-sub);
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    /* Quick Action / Add Video Form */
+    .admin-action-box {
+      background: var(--card-bg);
+      border: 1px dashed var(--primary);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .admin-action-box h3 {
+      font-size: 14px;
+      color: var(--primary);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .admin-input {
+      width: 100%;
+      padding: 10px 12px;
+      background: #0f1118;
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .admin-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .add-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), #a6841c);
+      color: #000;
+      border: none;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    /* Section Tabs */
+    .section-header {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section-header span {
+      font-size: 12px;
+      color: var(--primary);
+    }
+
+    /* Video Feed */
+    .video-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .video-container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      background: #000;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .video-body {
+      padding: 14px;
+    }
+
+    .video-tag {
+      display: inline-block;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--primary);
+      background: rgba(212, 175, 55, 0.12);
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .video-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .video-desc {
+      font-size: 12px;
+      color: var(--text-sub);
+      line-height: 1.4;
+      margin-bottom: 14px;
+    }
+
+    .order-action {
+      display: flex;
+      gap: 10px;
+    }
+
+    .wa-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: linear-gradient(135deg, var(--accent-green), #1b9e4b);
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    /* Modern Bottom Nav Dock */
+    .bottom-dock {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(14, 16, 24, 0.95);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      z-index: 1000;
+    }
+
+    .dock-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--text-sub);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .dock-tab.active {
+      color: var(--primary);
+    }
+
+    .dock-icon {
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top App Navigation -->
+  <div class="top-nav">
+    <div class="brand-title">SADDAM STUDIOS</div>
+    <div class="status-badge">
+      <span class="status-dot"></span>
+      Online Hub
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- Profile Dashboard Card -->
+    <div class="profile-card">
+      <div class="profile-top">
+        <div class="avatar">MS</div>
+        <div class="profile-meta">
+          <h2>Mohammad Saddam Hussain</h2>
+          <p>Cinema Lab & Creative Director</p>
+          <span>📍 Dhanwar, Hazaribagh, Jharkhand</span>
+        </div>
+      </div>
+      <p class="bio-text">
+        Official creative visual laboratory specializing in high-contrast cinematic edits, AI animations, video thumbnails, and motion picture storytelling.
+      </p>
+      
+      <!-- Stats / Performance -->
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Edits Done</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">4K / UHD</div>
+          <div class="stat-label">Quality</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Satisfaction</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Video Add Box (Instant Live Update) -->
+    <div class="admin-action-box">
+      <h3>Add New Project Video <span style="font-size:11px; color:#888;">Instant Live</span></h3>
+      <input type="text" id="videoTitleInput" class="admin-input" placeholder="Project Title (e.g. AI Cinematic Reel)">
+      <input type="text" id="videoUrlInput" class="admin-input" placeholder="YouTube Video Link ya Video ID">
+      <button class="add-btn" onclick="addNewVideo()">Publish Video to Feed</button>
+    </div>
+
+    <!-- Portfolio Feed -->
+    <div class="section-header">
+      <h2>Visual Projects & Portfolio</h2>
+      <span>Live Showcase</span>
+    </div>
+
+    <div id="videoFeedContainer">
+      <!-- Default Featured Video -->
+      <div class="video-card">
+        <div class="video-container">
+          <iframe 
+            src="https://www.youtube.com/embed/Ta4nyuMvqok" 
+            title="Saddam Studios Project"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="video-body">
+          <span class="video-tag">Masterwork Edit</span>
+          <h3 class="video-title">Cinematic Pro Editing Showcase</h3>
+          <p class="video-desc">Advanced transitions, sound dynamics, color balance aur motion visual effects.</p>
+          <div class="order-action">
+            <a href="https://wa.me/91XXXXXXXXXX?text=Assalamu%20Alaikum%20Mohammad%20Saddam%20Hussain,%20maine%20aapka%20dashboard%20dekha.%20Mujhe%20apni%20video%20edit%20karwani%20hai." target="_blank" class="wa-btn">
+              Direct Order on WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom App Navigation Dock -->
+  <div class="bottom-dock">
+    <a href="#" class="dock-tab active">
+      <span class="dock-icon">⚡</span>
+      Dashboard
+    </a>
+    <a href="#videoFeedContainer" class="dock-tab">
+      <span class="dock-icon">🎬</span>
+      Videos
+    </a>
+    <a href="https://wa.me/91XXXXXXXXXX" target="_blank" class="dock-tab">
+      <span class="dock-icon">💬</span>
+      WhatsApp
+    </a>
+  </div>
+
+  <script>
+    // YouTube ID parser
+    function extractYouTubeID(url) {
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+      const match = url.match(regExp);
+      return (match && match[2].length === 11) ? match[2] : url;
+    }
+
+    function addNewVideo() {
+      const title = document.getElementById('videoTitleInput').value.trim();
+      const rawUrl = document.getElementById('videoUrlInput').value.trim();
+
+      if (!title || !rawUrl) {
+        alert('Kripya Project Title aur Video Link dono bhariye.');
+        return;
+      }
+
+      const videoId = extractYouTubeID(rawUrl);
+      const container = document.getElementById('videoFeedContainer');
+
+      const card = document.createElement('div');
+      card.className = 'video-card';
+      card.innerHTML = `
+        <div class="video-container">
+          <iframe 
+            src="https://www.youtube.com/embed/${videoId}" 
+            title="${title}"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div class="video-body">
+          <span class="video-tag">Latest Upload</span>
+          <h3 class="video-title">${title}</h3>
+          <p class="video-desc">High quality visual edit by Mohammad Saddam Studios.</p>
+          <div class="order-action">
+            <a href="https://wa.me/91XXXXXXXXXX?text=Assalamu%20Alaikum%20Mohammad%20Saddam%20Hussain,%20maine%20aapka%20naya%20project%20'${encodeURIComponent(title)}'%20dekha.%20Mujhe%20aisa%20kaam%20karwana%20hai." target="_blank" class="wa-btn">
+              Direct Order on WhatsApp
+            </a>
+          </div>
+        </div>
+      `;
+
+      container.prepend(card);
+      document.getElementById('videoTitleInput').value = '';
+      document.getElementById('videoUrlInput').value = '';
+      alert('Video aapke dashboard me safaltapoorvak jud gaya!');
+    }
+  </script>
+</body>
+</html>
